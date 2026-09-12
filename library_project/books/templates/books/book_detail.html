@@ -1,0 +1,18 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">{{ book.title }}</h2>
+        <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
+        <p class="card-text"><strong>Quantity:</strong> {{ book.quantity }}</p>
+        <p class="card-text"><strong>Publication Year:</strong> {{ book.publication_year }}</p>
+
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">Back to List</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'book_edit' book.id %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'book_delete' book.id %}" class="btn btn-danger">Delete</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

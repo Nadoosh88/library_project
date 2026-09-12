@@ -1,0 +1,32 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Create New Reservation</h2>
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="member" class="form-label">Member</label>
+            <select name="member_id" id="member" class="form-select" required>
+                <option value="" selected disabled>Select Member...</option>
+                {% for member in members %}
+                    <option value="{{ member.id }}">{{ member }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="book" class="form-label">Book (0 copies available)</label>
+            <select name="book_id" id="book" class="form-select" required>
+                <option value="" selected disabled>Select Book...</option>
+                {% for book in books %}
+                    <option value="{{ book.id }}">{{ book.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Place Reservation</button>
+        <a href="{% url 'reservation_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

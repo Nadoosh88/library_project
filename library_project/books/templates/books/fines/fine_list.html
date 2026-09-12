@@ -1,0 +1,49 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Fine Management</h2>
+    <p class="text-muted">Track outstanding balances and process payments for overdue items.</p>
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Member</th>
+                <th>Book Title</th>
+                <th>Due Date</th>
+                <th>Amount ($)</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fine in fines %}
+            <tr>
+                <td>{{ fine.borrow_record.member }}</td>
+                <td>{{ fine.borrow_record.book.title }}</td>
+                <td>{{ fine.borrow_record.due_date }}</td>
+                <td><strong>${{ fine.amount }}</strong></td>
+                <td>
+                    {% if fine.status == 'UNPAID' %}
+                        <span class="badge bg-danger">Unpaid</span>
+                    {% else %}
+                        <span class="badge bg-success">Paid</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if fine.status == 'UNPAID' %}
+                        <a href="{% url 'pay_fine' fine.id %}" class="btn btn-sm btn-success">Mark as Paid</a>
+                    {% else %}
+                        <button class="btn btn-sm btn-secondary" disabled>Settled</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">No fines recorded.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

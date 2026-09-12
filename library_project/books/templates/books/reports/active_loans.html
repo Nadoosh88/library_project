@@ -1,0 +1,42 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+<h2>Active Loans</h2>
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Member</th>
+            <th>Book Title</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loan in loans %}
+        <tr class="{% if loan.is_overdue %}table-danger{% endif %}">
+            <td>{{ loan.member }}</td>
+            <td>{{ loan.book.title }}</td>
+            <td>{{ loan.borrow_date }}</td>
+            <td>{{ loan.due_date }}</td>
+            <td>
+                {% if loan.is_overdue %}
+                    <span class="badge bg-danger">Overdue</span>
+                {% else %}
+                    <span class="badge bg-success">On Time</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'return_book' loan.id %}" class="btn btn-sm btn-primary">Return Book</a>
+                <a href="{% url 'mark_book_lost' loan.id %}" class="btn btn-sm btn-outline-danger ms-1">Report Lost</a>
+            </td>
+
+
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No active loans found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
